@@ -1,0 +1,13 @@
+[package]
+name = "tutorial7-particles"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+glam.workspace = true
+wgpu.workspace = true
+winit.workspace = true
+anyhow.workspace = true
+framework.workspace = true
+bytemuck.workspace = true
+rand.workspace = true

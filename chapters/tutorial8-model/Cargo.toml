@@ -1,0 +1,16 @@
+[package]
+name = "tutorial8-model"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+wgpu.workspace = true
+winit.workspace = true
+framework.workspace = true
+glam.workspace = true
+bytemuck.workspace = true
+anyhow.workspace = true
+image.workspace = true
+pollster.workspace = true
+tobj = { version = "4.0.5", features = ["async"] }
+gltf.workspace = true

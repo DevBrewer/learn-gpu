@@ -1,0 +1,13 @@
+[package]
+name = "tutorial3-buffers"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+framework.workspace = true
+wgpu.workspace = true
+bytemuck.workspace = true
+anyhow.workspace = true
+winit.workspace = true
+
+[package.metadata.wgsl-analyzer]

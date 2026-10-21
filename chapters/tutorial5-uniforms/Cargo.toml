@@ -1,0 +1,16 @@
+[package]
+name = "tutorial5-uniforms"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+framework.workspace = true
+winit.workspace = true
+wgpu.workspace = true
+bytemuck.workspace = true
+image.workspace = true
+anyhow.workspace = true
+glam.workspace = true
+pollster.workspace = true
+log.workspace = true
+env_logger.workspace = true

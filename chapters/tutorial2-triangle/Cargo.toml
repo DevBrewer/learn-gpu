@@ -1,0 +1,11 @@
+[package]
+name = "tutorial2-triangle"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+wgpu.workspace = true
+anyhow.workspace = true
+framework.workspace = true
+
+[package.metadata.wgsl-analyzer]

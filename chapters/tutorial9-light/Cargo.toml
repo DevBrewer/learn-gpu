@@ -1,0 +1,15 @@
+[package]
+name = "tutorial9-light"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+wgpu.workspace = true
+winit.workspace = true
+framework.workspace = true
+glam.workspace = true
+anyhow.workspace = true
+image.workspace = true
+gltf.workspace = true
+pollster.workspace = true
+bytemuck.workspace = true

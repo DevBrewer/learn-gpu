@@ -1,0 +1,12 @@
+[package]
+name = "tutorial4-Textures"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+winit.workspace = true
+wgpu.workspace = true
+anyhow.workspace = true
+image.workspace = true
+bytemuck.workspace = true
+framework.workspace = true

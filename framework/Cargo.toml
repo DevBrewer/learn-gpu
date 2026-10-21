@@ -1,0 +1,12 @@
+[package]
+name = "framework"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+wgpu = "30.0.1"
+winit = { version = "0.30.13", features = ["rwh_06"] }
+pollster = "1.0.1"
+anyhow = "1.0.104"
+log = "0.4.34"
+env_logger = "0.11.11"

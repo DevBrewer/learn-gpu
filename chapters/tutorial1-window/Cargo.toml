@@ -1,0 +1,10 @@
+[package]
+name = "tutorial1-window"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+wgpu.workspace = true
+env_logger.workspace = true
+anyhow.workspace = true
+framework.workspace = true

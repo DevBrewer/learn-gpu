@@ -1,0 +1,13 @@
+[package]
+name = "tutorial6-instance"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+wgpu.workspace = true
+winit.workspace = true
+anyhow.workspace = true
+framework.workspace = true
+image.workspace = true
+glam.workspace = true
+bytemuck.workspace = true
