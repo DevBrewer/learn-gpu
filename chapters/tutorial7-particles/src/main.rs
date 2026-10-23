@@ -1,3 +1,4 @@
+#![allow(unused)]
 use framework::App;
 use glam::{Mat4, Vec3};
 use wgpu::util::DeviceExt;
@@ -162,6 +163,7 @@ fn build_ground_grid() -> Vec<GridVertex> {
 
 /// Structure of Arrays (SoA) Particle System.
 /// Stores particle attributes in parallel contiguous vectors for cache locality and SIMD execution.
+#[derive(Default)]
 pub struct ParticleSystemSoA {
     pub positions: Vec<Vec3>,
     pub velocities: Vec<Vec3>,
@@ -189,6 +191,11 @@ impl ParticleSystemSoA {
     /// Returns the current total count of active particles (rockets + embers).
     pub fn len(&self) -> usize {
         self.positions.len()
+    }
+
+    #[must_use]
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
     }
 
     /// Spawns an ascending firework rocket at ground level with random upward velocity and HSV color.
@@ -522,13 +529,13 @@ impl CameraController {
 
     /// Updates yaw and pitch angles when the user drags with the mouse.
     fn handle_mouse_move(&mut self, x: f32, y: f32) {
-        if self.mouse_dragging {
-            if let Some((last_x, last_y)) = self.last_mouse_pos {
-                let dx = x - last_x;
-                let dy = y - last_y;
-                self.yaw += dx * 0.005;
-                self.pitch = (self.pitch - dy * 0.005).clamp(-1.3, 1.3);
-            }
+        if self.mouse_dragging
+            && let Some((last_x, last_y)) = self.last_mouse_pos
+        {
+            let dx = x - last_x;
+            let dy = y - last_y;
+            self.yaw += dx * 0.005;
+            self.pitch = (self.pitch - dy * 0.005).clamp(-1.3, 1.3);
         }
         self.last_mouse_pos = Some((x, y));
     }
