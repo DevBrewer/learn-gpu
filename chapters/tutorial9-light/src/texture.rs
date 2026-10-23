@@ -1,6 +1,7 @@
 use image::{DynamicImage, GenericImageView};
 
 pub struct Texture {
+    #[allow(unused)]
     pub texture: wgpu::Texture,
     pub view: wgpu::TextureView,
     pub sampler: wgpu::Sampler,
