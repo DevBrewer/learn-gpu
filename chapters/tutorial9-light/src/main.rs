@@ -1,6 +1,6 @@
 use framework::App;
 use glam::{
-    Mat4, Quat, Vec3,
+    Mat3, Mat4, Quat, Vec3,
     camera::rh::{proj::directx::perspective, view::look_at_mat4},
 };
 use model::{DrawModel, Vertex};
@@ -164,13 +164,19 @@ struct Instance {
 #[repr(C)]
 #[derive(Debug, Clone, Copy, bytemuck::Pod, bytemuck::Zeroable)]
 struct InstanceRaw {
-    model: Mat4,
+    model: [[f32; 4]; 4],
+    normal: [[f32; 3]; 3],
 }
 
 impl Instance {
     fn to_raw(&self) -> InstanceRaw {
         let model = Mat4::from_translation(self.position) * Mat4::from_quat(self.rotation);
-        InstanceRaw { model }
+        // Extract the 3x3 normal matrix (if scale is uniform, rotation-only)
+        let normal = Mat3::from_quat(self.rotation);
+        InstanceRaw {
+            model: model.to_cols_array_2d(),
+            normal: normal.to_cols_array_2d(),
+        }
     }
 }
 
@@ -204,6 +210,24 @@ impl model::Vertex for InstanceRaw {
                     offset: mem::size_of::<[f32; 12]>() as wgpu::BufferAddress,
                     shader_location: 8,
                     format: wgpu::VertexFormat::Float32x4,
+                },
+                // Normal matrix column 4 (slot 9)
+                wgpu::VertexAttribute {
+                    offset: mem::size_of::<[f32; 16]>() as wgpu::BufferAddress,
+                    shader_location: 9,
+                    format: wgpu::VertexFormat::Float32x3,
+                },
+                // Normal matrix column 5 (slot 10)
+                wgpu::VertexAttribute {
+                    offset: mem::size_of::<[f32; 19]>() as wgpu::BufferAddress,
+                    shader_location: 10,
+                    format: wgpu::VertexFormat::Float32x3,
+                },
+                // Normal matrix column 6 (slot 11)
+                wgpu::VertexAttribute {
+                    offset: mem::size_of::<[f32; 22]>() as wgpu::BufferAddress,
+                    shader_location: 11,
+                    format: wgpu::VertexFormat::Float32x3,
                 },
             ],
         }

@@ -167,6 +167,7 @@ where
 }
 
 pub trait DrawLight<'a> {
+    #[allow(unused)]
     fn draw_light_mesh(
         &mut self,
         mesh: &'a Mesh,
