@@ -1,0 +1,13 @@
+[package]
+name = "donuts-vertex"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+wgpu.workspace = true
+winit.workspace = true
+glam.workspace = true
+anyhow.workspace = true
+framework.workspace = true
+bytemuck.workspace = true
+rand.workspace = true

@@ -515,6 +515,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "donuts-vertex"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bytemuck",
+ "framework",
+ "glam",
+ "rand",
+ "wgpu",
+ "winit",
+]
+
+[[package]]
 name = "downcast-rs"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
