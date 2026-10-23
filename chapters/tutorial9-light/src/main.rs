@@ -44,18 +44,21 @@ impl Camera {
 #[repr(C)]
 #[derive(Debug, Clone, Copy, bytemuck::Pod, bytemuck::Zeroable)]
 struct CameraUniform {
-    proj_view: Mat4,
+    view_position: [f32; 4],
+    proj_view: [[f32; 4]; 4],
 }
 
 impl CameraUniform {
     fn new() -> Self {
         Self {
-            proj_view: Mat4::IDENTITY,
+            view_position: [0.0; 4],
+            proj_view: Mat4::IDENTITY.to_cols_array_2d(),
         }
     }
 
     fn update_view_proj(&mut self, camera: &Camera) {
-        self.proj_view = camera.build_view_projection_matrix();
+        self.view_position = camera.eye.to_homogeneous().to_array();
+        self.proj_view = camera.build_view_projection_matrix().to_cols_array_2d();
     }
 }
 
@@ -385,7 +388,7 @@ impl App for State {
                 label: Some("camera_bind_group_layout"),
                 entries: &[wgpu::BindGroupLayoutEntry {
                     binding: 0,
-                    visibility: wgpu::ShaderStages::VERTEX,
+                    visibility: wgpu::ShaderStages::VERTEX | wgpu::ShaderStages::FRAGMENT,
                     ty: wgpu::BindingType::Buffer {
                         ty: wgpu::BufferBindingType::Uniform,
                         has_dynamic_offset: false,
