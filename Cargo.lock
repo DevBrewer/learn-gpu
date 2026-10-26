@@ -2251,6 +2251,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "tutorial10-normals"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bytemuck",
+ "framework",
+ "glam",
+ "gltf",
+ "image",
+ "log",
+ "pollster",
+ "wgpu",
+ "winit",
+]
+
+[[package]]
 name = "tutorial2-triangle"
 version = "0.1.0"
 dependencies = [

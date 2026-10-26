@@ -36,22 +36,35 @@ This project follows the popular tutorial series from [**Learn Wgpu (sotrh.githu
 | **Tutorial 5: Uniforms** | 3D Camera, uniform buffers, and view-projection matrices | `glam`, perspective projection, uniform buffers |
 | **Tutorial 6: Instance** | Hardware instancing for rendering multiple objects | Instance buffer, quaternions, instanced draw calls |
 | **Tutorial 7: Particles** | Dynamic particle updates and instanced compute/vertex rendering | Instancing, per-frame buffer updates |
-| **Tutorial 8: Model** | 3D model loading (GLTF / OBJ) and multi-material meshes | `gltf`, mesh indices, multiple bind groups |
+| **Tutorial 8: Model** | 3D model loading (GLTF) and multi-material meshes | `gltf`, mesh indices, multiple bind groups |
 | **Tutorial 9: Light** | Blinn-Phong lighting model with dynamic orbiting point light | Normal vectors, light uniforms, custom light shader pass |
+| **Tutorial 10: Normals** | Tangent-space normal mapping with bump maps | Tangent & bitangent generation, normal maps, TBN matrix in WGSL |
 
 ---
 
 ## ⚙️ Key Technical Differences from the Original Tutorial
 
-While following [Learn Wgpu](https://sotrh.github.io/learn-wgpu/), this repository introduces notable differences:
+While following [Learn Wgpu](https://sotrh.github.io/learn-wgpu/), this repository modernizes and adapts key crates and techniques:
 
-1. **`glam` for Math**:
-   - Camera view-projection utilizes `glam::camera::rh::proj::directx::perspective` to ensure proper right-handed, Y-up clip space mapping matching WebGPU conventions.
-   - Instance rotations and light orbital mechanics utilize `glam::Quat` and `glam::Vec3`.
-2. **WGSL Alignment Rules**:
-   - `LightUniform` adheres to WebGPU 16-byte alignment (`vec3<f32>` padded with `_padding: u32`).
-3. **Modular Submodule Architecture**:
-   - Each chapter is isolated with its own Git history and dependencies managed under a shared top-level workspace.
+### 📦 Crate Comparisons
+
+| Role / Purpose | Original Tutorial Crate | This Repository | Why the Change? |
+| :--- | :--- | :--- | :--- |
+| **Math Library** | [`cgmath`](https://crates.io/crates/cgmath) | [`glam`](https://crates.io/crates/glam) | Fast, SIMD-aligned, ergonomics-friendly, modern standard in Rust game dev & WebGPU (with direct DirectX/WebGPU NDC support). |
+| **3D Model Loading** | [`tobj`](https://crates.io/crates/tobj) (`.obj`) | [`gltf`](https://crates.io/crates/gltf) (`.gltf` / `.bin`) | Industry standard glTF 2.0 asset workflow with PBR material definitions, modern scene hierarchies, and binary buffers. |
+| **Windowing & Events** | `winit` 0.28/0.29 (legacy `event_loop.run`) | `winit` 0.30 (`ApplicationHandler`) | Upgraded to the modern event-driven `ApplicationHandler` API required in `winit` 0.30+. |
+| **Async Executor** | `futures` block_on | [`pollster`](https://crates.io/crates/pollster) | Minimal, zero-overhead blocking executor designed specifically for WebGPU device initialization without heavy async runtimes. |
+| **Texture Loading** | `image` (legacy formats) | [`image`](https://crates.io/crates/image) (v0.25+) | Configured with sRGB for color textures (`Rgba8UnormSrgb`) and Linear for normal maps (`Rgba8Unorm`). |
+| **Boilerplate Handling**| Repeated `main.rs` setup per tutorial | Custom `framework` crate | Clean lifecycle abstraction (`App` trait) reducing repetitive event loop and swapchain setup. |
+
+### 🛠 Math & Shader Details
+1. **`glam` Projection**:
+   - Camera view-projection utilizes `glam::Mat4::perspective_rh` and coordinates configured for WebGPU's $[0, 1]$ depth clip space.
+   - Rotations and orbital light physics use `glam::Quat` and `glam::Vec3`.
+2. **Tangent & Bitangent Generation**:
+   - Because glTF files often omit explicit tangent vectors (or store 4D tangents without bitangents), [resources.rs](chapters/tutorial10-normals/src/resources.rs) computes triangle face tangents and bitangents from UVs and positions on-the-fly and averages them per vertex.
+3. **WGSL Alignment Rules**:
+   - Uniforms like `LightUniform` strictly adhere to WebGPU 16-byte alignment rules (`vec3<f32>` padded with `_padding: u32`).
 
 ---
 
@@ -86,9 +99,12 @@ cargo run -p tutorial8-model
 
 # Run Tutorial 9: Lighting
 cargo run -p tutorial9-light
+
+# Run Tutorial 10: Normal Mapping
+cargo run -p tutorial10-normals
 ```
 
-### Controls (Tutorial 9: Light)
+### Controls (Tutorial 9 & 10)
 - **`W` / `Up`**: Move camera forward
 - **`S` / `Down`**: Move camera backward
 - **`A` / `Left`**: Orbit camera left

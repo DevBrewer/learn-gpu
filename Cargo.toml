@@ -8,7 +8,7 @@ members = [
   "chapters/tutorial5-uniforms",
   "chapters/tutorial6-instance",
   "chapters/tutorial7-particles",
-  "chapters/tutorial8-model", "chapters/tutorial9-light", "chapters/donuts-vertex",
+  "chapters/tutorial8-model", "chapters/tutorial9-light", "chapters/donuts-vertex", "chapters/tutorial10-normals",
 ]
 resolver = "2"
 
