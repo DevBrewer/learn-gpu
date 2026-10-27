@@ -586,9 +586,9 @@ impl App for State {
             bytemuck::cast_slice(&[self.camera_uniform]),
         );
 
-        // Update the light - rotates around the y-axis smoothly
+        // Update the light - rotates around the y-axis at 60 degrees per second (frame-rate independent)
         let old_position = Vec3::from_slice(&self.light_uniform.position);
-        let rot = Quat::from_axis_angle(Vec3::Y, 1_f32.to_radians());
+        let rot = Quat::from_axis_angle(Vec3::Y, (60.0 * dt.as_secs_f32()).to_radians());
         let new_pos = rot * old_position;
         self.light_uniform.position = new_pos.to_array();
 
