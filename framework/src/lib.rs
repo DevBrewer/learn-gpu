@@ -3,7 +3,7 @@ use std::sync::Arc;
 use log::info;
 use winit::{
     application::ApplicationHandler,
-    event::{ElementState, KeyEvent, MouseButton, WindowEvent},
+    event::{ElementState, KeyEvent, MouseButton, MouseScrollDelta, WindowEvent},
     event_loop::{ActiveEventLoop, EventLoop},
     keyboard::{KeyCode, PhysicalKey},
     window::{Window, WindowId},
@@ -48,6 +48,7 @@ pub trait App: Sized {
 
     fn mouse_pressed(&mut self, _ctx: &Context, _button: MouseButton) {}
     fn mouse_release(&mut self, _ctx: &Context, _button: MouseButton) {}
+    fn handle_mouse_wheel(&mut self, _delta: &MouseScrollDelta) {}
 }
 
 pub struct State<A: App> {
@@ -188,6 +189,10 @@ impl<A: App> ApplicationHandler for Runner<A> {
                 } else {
                     state.app.mouse_release(&state.ctx, button);
                 }
+            }
+            WindowEvent::MouseWheel { delta, .. } => {
+                state.app.handle_mouse_wheel(&delta);
+                state.ctx.window.request_redraw();
             }
             WindowEvent::KeyboardInput {
                 event:

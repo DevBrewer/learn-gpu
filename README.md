@@ -39,6 +39,7 @@ This project follows the popular tutorial series from [**Learn Wgpu (sotrh.githu
 | **Tutorial 8: Model** | 3D model loading (GLTF) and multi-material meshes | `gltf`, mesh indices, multiple bind groups |
 | **Tutorial 9: Light** | Blinn-Phong lighting model with dynamic orbiting point light | Normal vectors, light uniforms, custom light shader pass |
 | **Tutorial 10: Normals** | Tangent-space normal mapping with bump maps | Tangent & bitangent generation, normal maps, TBN matrix in WGSL |
+| **Tutorial 11: Better Camera** | First-person camera controller with yaw/pitch and projection | Decoupled `Camera`, `Projection`, mouse look & wheel zoom |
 
 ---
 
@@ -102,15 +103,20 @@ cargo run -p tutorial9-light
 
 # Run Tutorial 10: Normal Mapping
 cargo run -p tutorial10-normals
+
+# Run Tutorial 11: A Better Camera
+cargo run -p tutorial11-better-camera
 ```
 
-### Controls (Tutorial 9 & 10)
-- **`W` / `Up`**: Move camera forward
+### Controls (Tutorial 11: Better Camera)
+- **`W` / `Up`**: Move camera forward (along horizontal facing direction)
 - **`S` / `Down`**: Move camera backward
-- **`A` / `Left`**: Orbit camera left
-- **`D` / `Right`**: Orbit camera right
-- **`Space`**: Move camera up
-- **`Shift`**: Move camera down
+- **`A` / `Left`**: Strafe camera left
+- **`D` / `Right`**: Strafe camera right
+- **`Space`**: Fly up
+- **`Shift`**: Fly down
+- **Left Mouse Click + Drag**: Free-look rotate (yaw & pitch)
+- **Mouse Wheel Scroll**: Zoom / dolly along view vector
 - **`Esc`**: Exit application
 
 ---
