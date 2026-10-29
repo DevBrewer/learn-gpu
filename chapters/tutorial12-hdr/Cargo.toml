@@ -1,0 +1,16 @@
+[package]
+name = "tutorial12-hdr"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+wgpu.workspace = true
+winit.workspace = true
+framework.workspace = true
+glam.workspace = true
+image.workspace = true
+gltf.workspace = true
+anyhow.workspace = true
+bytemuck.workspace = true
+log.workspace = true
+pollster.workspace = true

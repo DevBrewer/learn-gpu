@@ -40,6 +40,68 @@ This project follows the popular tutorial series from [**Learn Wgpu (sotrh.githu
 | **Tutorial 9: Light** | Blinn-Phong lighting model with dynamic orbiting point light | Normal vectors, light uniforms, custom light shader pass |
 | **Tutorial 10: Normals** | Tangent-space normal mapping with bump maps | Tangent & bitangent generation, normal maps, TBN matrix in WGSL |
 | **Tutorial 11: Better Camera** | First-person camera controller with yaw/pitch and projection | Decoupled `Camera`, `Projection`, mouse look & wheel zoom |
+| **Tutorial 12: HDR & Environment** | High Dynamic Range rendering, tonemapping & equirectangular-to-cubemap compute | `Rgba16Float` HDR pipeline, compute shader cubemap generation, `HdrDecoder`, skybox |
+
+---
+
+### 🌟 Tutorial 12: High Dynamic Range (HDR) & Image-Based Lighting Architecture
+
+Tutorial 12 implements an end-to-end HDR rendering and environment map reflection pipeline:
+
+```
+                  ┌────────────────────────────────────────┐
+                  │          Radiance HDR File             │
+                  │         (pure-sky.hdr - 2:1)           │
+                  └───────────────────┬────────────────────┘
+                                      │  image::HdrDecoder
+                                      ▼
+                  ┌────────────────────────────────────────┐
+                  │ 2D Equirectangular Source Texture      │
+                  │            (Rgba32Float)               │
+                  └───────────────────┬────────────────────┘
+                                      │  equirectangular.wgsl
+                                      │  Compute Pass (6 face layers)
+                                      ▼
+                  ┌────────────────────────────────────────┐
+                  │       Cubemap Texture (6 Faces)        │
+                  │             (Rgba32Float)              │
+                  └─────────┬────────────────────┬─────────┘
+                            │                    │
+          Group 3: env_map  │                    │ Group 1: env_map
+                            ▼                    ▼
+     ┌────────────────────────────┐        ┌────────────────────────────┐
+     │   Scene Model Pipeline     │        │    Skybox Pipeline         │
+     │  - Blinn-Phong + Normal Map│        │  - Fullscreen triangle     │
+     │  - Cubemap Reflection      │        │  - Unproject to world rays │
+     │  - Targets Rgba16Float HDR │        │  - Depth Compare: LessEqual│
+     └──────────────┬─────────────┘        └─────────────┬──────────────┘
+                    │                                    │
+                    └─────────────────┬──────────────────┘
+                                      ▼
+                    ┌────────────────────────────────────┐
+                    │      Offscreen HDR Render Target   │
+                    │            (Rgba16Float)           │
+                    └─────────────────┬──────────────────┘
+                                      │ hdr.wgsl (Tonemapping pass)
+                                      ▼
+                    ┌────────────────────────────────────┐
+                    │     Surface Swapchain Texture      │
+                    │        (Bgra8UnormSrgb / 60 FPS)   │
+                    └────────────────────────────────────┘
+```
+
+#### Key Highlights & Fixes:
+1. **Compute Shader Cubemap Projection (`equirectangular.wgsl`)**:
+   - Converts 2D latitude-longitude HDR textures into a 6-layer cubemap on the GPU via compute workgroups (`16x16x1`).
+   - Uses spherical coordinate mapping (`atan2`, `asin`) to sample source texels with `textureLoad` and store them directly into `texture_storage_2d_array<rgba32float, write>`.
+2. **Modern `image` 0.25+ Integration**:
+   - Decodes RGB float data via `hdr_decoder.read_image(&mut rgb_bytes)` and transforms them to RGBA 4-component vectors (`[chunk[0], chunk[1], chunk[2], 1.0]`).
+3. **Skybox Fullscreen Triangle (`sky.wgsl`)**:
+   - Generates a procedural fullscreen triangle (`vertex_index` 0..3) with $z = 1.0$ at the far clip plane.
+   - Reconstructs world-space view rays with `camera.inv_proj` and `camera.inv_view` (derived from `glam::Mat4::inverse()`).
+   - Configured with `depth_compare: LessEqual`, `depth_write_enabled: false`, and `cull_mode: None` so it passes behind scene geometry without overwriting depth.
+4. **Tonemapping Pass (`hdr.rs` & `hdr.wgsl`)**:
+   - Compresses high dynamic range colors into the $[0, 1]$ monitor color space using an exposure-based Reinhard/exponential tonemapping operator.
 
 ---
 
@@ -106,9 +168,12 @@ cargo run -p tutorial10-normals
 
 # Run Tutorial 11: A Better Camera
 cargo run -p tutorial11-better-camera
+
+# Run Tutorial 12: HDR & Tonemapping
+cargo run -p tutorial12-hdr
 ```
 
-### Controls (Tutorial 11: Better Camera)
+### Controls (Tutorial 11: Better Camera & Tutorial 12: HDR)
 - **`W` / `Up`**: Move camera forward (along horizontal facing direction)
 - **`S` / `Down`**: Move camera backward
 - **`A` / `Left`**: Strafe camera left
