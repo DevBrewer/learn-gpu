@@ -29,7 +29,7 @@ struct DemoApp {
 
 impl App for DemoApp {
     fn title() -> &'static str {
-        "pgt - 3D PBR Model Viewer & GUI Demo"
+        "pgt - Cube Lighting & GUI Demo"
     }
 
     fn init(ctx: &Context) -> anyhow::Result<Self> {
@@ -234,5 +234,5 @@ impl App for DemoApp {
 }
 
 fn main() -> anyhow::Result<()> {
-    run::<DemoApp>("pgt Demo", 1280, 720)
+    run::<DemoApp>("Cube Lighting Demo", 1280, 720)
 }

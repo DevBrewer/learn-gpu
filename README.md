@@ -13,7 +13,7 @@ A hands-on repository exploring modern GPU programming in **Rust** using **`wgpu
 - **`framework/`**: Powers Chapters 1–12. Handles `winit` 0.30 `ApplicationHandler` lifecycle, device/surface configuration, and keyboard/mouse hooks.
 - **`pgt/` (Programmable GPU Toolkit)**: An extension of `framework` for rapid prototyping. Modular building blocks rather than a rigid framework: fluent `PipelineBuilder`, `UniformBinding`, camera controllers, and first-class `egui` integration (root `&mut Ui`).
 - **`chapters/`**: Tutorial crates (1–12) powered by `framework`.
-- **`demos/`**: Advanced showcase applications (`demos/demo-pgt`, `demos/ImageEditor`) powered by `pgt`.
+- **`demos/`**: Advanced showcase applications (`demos/cube-lighting`, `demos/ImageEditor`) powered by `pgt`.
 
 ---
 
@@ -33,7 +33,7 @@ A hands-on repository exploring modern GPU programming in **Rust** using **`wgpu
 | **Tutorial 10: Normals** | Tangent-space normal mapping and TBN matrix | `framework` |
 | **Tutorial 11: Better Camera** | First-person camera controller with mouse look | `framework` |
 | **Tutorial 12: HDR & Skybox** | HDR cubemap compute, tonemapping & skybox | `framework` |
-| **Demo: PGT** | Interactive 3D model viewer with egui controls | `pgt` |
+| **Demo: Cube Lighting** | Textured normal-mapped cube, dynamic orbiting light & egui | `pgt` |
 | **Demo: Image Editor** | Real-time GPU post-processing, split-screen, file I/O | `pgt` |
 
 ---
@@ -66,7 +66,7 @@ cargo run -p tutorial8-model
 cargo run -p tutorial12-hdr
 
 # Run demos (using pgt crate + egui)
-cargo run -p demo-pgt
+cargo run -p cube-lighting
 cargo run -p ImageEditor
 ```
 

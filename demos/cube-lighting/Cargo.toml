@@ -1,5 +1,5 @@
 [package]
-name = "demo-pgt"
+name = "cube-lighting"
 version = "0.1.0"
 edition.workspace = true
 
