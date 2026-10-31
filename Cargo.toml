@@ -15,7 +15,8 @@ members = [
   "chapters/tutorial10-normals",
   "chapters/tutorial11-better-camera",
   "chapters/tutorial12-hdr",
-  "chapters/demo-pgt", "chapters/ImageEditor",
+  "demos/demo-pgt",
+  "demos/ImageEditor",
 ]
 resolver = "2"
 

@@ -12,7 +12,8 @@ A hands-on repository exploring modern GPU programming in **Rust** using **`wgpu
 
 - **`framework/`**: Powers Chapters 1–12. Handles `winit` 0.30 `ApplicationHandler` lifecycle, device/surface configuration, and keyboard/mouse hooks.
 - **`pgt/` (Programmable GPU Toolkit)**: An extension of `framework` for rapid prototyping. Modular building blocks rather than a rigid framework: fluent `PipelineBuilder`, `UniformBinding`, camera controllers, and first-class `egui` integration (root `&mut Ui`).
-- **`chapters/`**: Tutorial crates (1–12) and advanced demos (`demo-pgt`, `ImageEditor`).
+- **`chapters/`**: Tutorial crates (1–12) powered by `framework`.
+- **`demos/`**: Advanced showcase applications (`demos/demo-pgt`, `demos/ImageEditor`) powered by `pgt`.
 
 ---
 
@@ -37,7 +38,7 @@ A hands-on repository exploring modern GPU programming in **Rust** using **`wgpu
 
 ---
 
-## 🎨 Demo: Image Editor (`chapters/ImageEditor`)
+## 🎨 Demo: Image Editor (`demos/ImageEditor`)
 
 ![PGT Image Studio Demo](assets/image-editor-demo.jpg)
 
