@@ -1,0 +1,28 @@
+[package]
+name = "pgt"
+version = "0.1.0"
+edition.workspace = true
+description = "Programmable GPU Toolkit - high-level, component-based WGPU & UI engine"
+
+[dependencies]
+wgpu.workspace = true
+winit.workspace = true
+glam.workspace = true
+bytemuck.workspace = true
+anyhow.workspace = true
+log.workspace = true
+env_logger.workspace = true
+pollster.workspace = true
+image.workspace = true
+
+# Optional feature dependencies
+gltf = { workspace = true, optional = true }
+egui = { workspace = true, optional = true }
+egui-wgpu = { workspace = true, optional = true }
+egui-winit = { workspace = true, optional = true }
+
+[features]
+default = ["gltf", "egui", "hdr"]
+gltf = ["dep:gltf"]
+egui = ["dep:egui", "dep:egui-wgpu", "dep:egui-winit"]
+hdr = []

@@ -1,0 +1,18 @@
+[package]
+name = "ImageEditor"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+pgt.workspace = true
+wgpu.workspace = true
+winit.workspace = true
+egui.workspace = true
+egui-wgpu.workspace = true
+egui-winit.workspace = true
+glam.workspace = true
+image.workspace = true
+anyhow.workspace = true
+log.workspace = true
+bytemuck.workspace = true
+rfd = "0.17.2"
